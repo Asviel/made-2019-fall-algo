@@ -1,6 +1,20 @@
+// Дано число N < 106 и последовательность целых чисел из [-231..231] длиной N.
+// Требуется построить бинарное дерево, заданное наивным порядком вставки.
+// Т.е., при добавлении очередного числа K в дерево с корнем root, если root→Key
+// ≤ K, то узел K добавляется в правое поддерево root; иначе в левое поддерево
+// root. Рекурсия запрещена. Выведите элементы в порядке level-order (по слоям,
+// “в ширину”).
+
+// Формат ввода
+// В первой строке записано число N.
+// Во последующих N строках — целые числа исходной последовательности.
+
+// Формат вывода
+// N целых чисел, разделенных пробелом.
+
+#include <cassert>
 #include <iostream>
 #include <queue>
-#include <cassert>
 
 class BinaryTree {
  public:
@@ -26,9 +40,7 @@ class BinaryTree {
 
 BinaryTree::BinaryTree() = default;
 
-BinaryTree::~BinaryTree() {
-  DeleteNode(root_);
-}
+BinaryTree::~BinaryTree() { DeleteNode(root_); }
 
 bool BinaryTree::Insert(int key) {
   if (!root_) {
@@ -36,7 +48,7 @@ bool BinaryTree::Insert(int key) {
     return true;
   }
 
-  BinaryTreeNode *current = root_;
+  BinaryTreeNode* current = root_;
   while (true) {
     if (key < current->key) {
       if (current->left) {
@@ -76,10 +88,11 @@ void BinaryTree::PrintInLevelOrder() const {
   }
 }
 
-void BinaryTree::DeleteNode(BinaryTree::BinaryTreeNode *node) {
+void BinaryTree::DeleteNode(BinaryTree::BinaryTreeNode* node) {
   if (!node) return;
 
-  // Удалять будем в level-order. Т.к. не храним parent'ов, нужно не потерять потомков после удаления родителя.
+  // Удалять будем в level-order. Т.к. не храним parent'ов, нужно не потерять
+  // потомков после удаления родителя.
   std::queue<BinaryTreeNode*> queue;
   queue.push(node);
 
