@@ -33,7 +33,7 @@ class BinaryTree {
     explicit BinaryTreeNode(int key) : key(key) {}
   };
 
-  void DeleteNode(BinaryTreeNode* node);
+  static void DeleteNode(BinaryTreeNode* node);
 
   BinaryTreeNode* root_ = nullptr;
 };
@@ -79,12 +79,12 @@ void BinaryTree::PrintInLevelOrder() const {
 
   while (!queue.empty()) {
     BinaryTreeNode* current = queue.front();
+    queue.pop();
 
     std::cout << current->key << ' ';
 
     if (current->left) queue.push(current->left);
     if (current->right) queue.push(current->right);
-    queue.pop();
   }
 }
 
@@ -98,10 +98,11 @@ void BinaryTree::DeleteNode(BinaryTree::BinaryTreeNode* node) {
 
   while (!queue.empty()) {
     BinaryTreeNode* current = queue.front();
+    queue.pop();
 
     if (current->left) queue.push(current->left);
     if (current->right) queue.push(current->right);
-    queue.pop();
+
     delete current;
   }
 }
