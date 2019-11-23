@@ -95,6 +95,7 @@ bool HashTable::Add(const std::string& key) {
   // У нас всегда будет свободная ячейка, т.к. выше проверяли коэффициент
   // заполнения, потому можем смело ставить цикл while.
   int idx = hash;
+  // TODO: Можно добавлять на место удаленного элемента, но: 1) нужно пройти до конца, чтобы посмотреть, что такого ключа нет; 2) load_factor_ менять не надо
   while (!table_[idx].empty()) {
     if (table_[idx] == key) return false;
     idx = (idx + probe) % capacity_;
