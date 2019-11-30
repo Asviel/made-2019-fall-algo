@@ -100,8 +100,8 @@ void Treap::Insert(int key, int value) {
     root_ = new TreapNode(key, value);
   } else {
     // Деревья под Split
-    TreapNode* t1 = new TreapNode();
-    TreapNode* t2 = new TreapNode();
+    TreapNode* t1 = nullptr;
+    TreapNode* t2 = nullptr;
     Split(root_, key, t1, t2);
 
     TreapNode* new_node = new TreapNode(key, value);
@@ -130,18 +130,21 @@ int Treap::FindKey(int value) {
   if (!root_) return -1;
 
   TreapNode* current = root_;
+  value = current->value - value - 1;
   int current_value = getLeftValue(current);
 
   while (current_value != value) {
-    if (current_value < value) {
-      value -= current_value + 1;
-      current = current->right;
-    } else {
+    if (value < current_value) {
       current = current->left;
+      current_value = getLeftValue(current);
+    } else {
+      value -= getLeftValue(current) + 1;
+      current = current->right;
+      current_value = getLeftValue(current);
     }
   }
 
-  return current->value;
+  return current->key;
 }
 
 void Treap::Delete(int key) {
@@ -189,7 +192,7 @@ int main() {
     assert(command == 1 || command == 2);
 
     if (command == 1) {
-      treap.Insert(value, rand());
+      treap.Insert(value, rand() % 100000);
       std::cout << treap.FindValue(value) << std::endl;
     } else {
       treap.Delete(treap.FindKey(value));
