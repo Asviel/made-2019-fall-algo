@@ -13,8 +13,8 @@
 #include <string>
 #include <vector>
 
-void Kmp(std::string& pattern, std::string& text);
-std::vector<int> Prefix(std::string& s);
+std::vector<int> Kmp(const std::string& pattern, const std::string& text);
+std::vector<int> Prefix(const std::string& s);
 
 int main() {
   std::string pattern, text;
@@ -23,11 +23,14 @@ int main() {
   std::cin >> text;
   assert(!pattern.empty() || !text.empty());
 
-  Kmp(pattern, text);
+  std::vector<int> occurrences = Kmp(pattern, text);
+  for (const int& occurrence : occurrences) std::cout << occurrence << ' ';
+
   return 0;
 }
 
-void Kmp(std::string& pattern, std::string& text) {
+std::vector<int> Kmp(const std::string& pattern, const std::string& text) {
+  std::vector<int> occurrences;
   auto pi_values = Prefix(pattern);
 
   int pi = 0;
@@ -37,13 +40,15 @@ void Kmp(std::string& pattern, std::string& text) {
     if (text[i] == pattern[pi]) ++pi;
 
     if (pi == pattern.length()) {
-      std::cout << i - pi + 1 << ' ';
+      occurrences.push_back(i - pi + 1);
       pi = pi_values[pi - 1];
     }
   }
+
+  return occurrences;
 }
 
-std::vector<int> Prefix(std::string& s) {
+std::vector<int> Prefix(const std::string& s) {
   std::vector<int> pi_values(s.length());
   pi_values[0] = 0;
 
